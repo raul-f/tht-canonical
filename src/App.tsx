@@ -1,34 +1,58 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect, useState } from 'react'
+import './App.scss'
 
-function App() {
-  const [count, setCount] = useState(0)
+import BlogCard from './components/BlogCard'
+
+type PostProps = {
+  topic: string,
+  postURL: string,
+  img: string,
+  title: string,
+  author: string,
+  authorURL: string,
+  date: string,
+  category: string
+}
+
+const App = () => {
+  let postArray: PostProps[] = []
+  const [posts, setPosts] = useState(postArray)
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const res = await fetch("https://people.canonical.com/~anthonydillon/wp-json/wp/v2/posts")
+        const postData = await res.json()
+        console.log(postData)
+
+        let updatedPosts = []
+        for(let i = 0; i < postData.length; i++) {
+            let newPost: PostProps = {
+              topic: postData[i]["_embedded"]["wp:term"][2][0] === undefined ? "General" : postData[i]["_embedded"]["wp:term"][2][0]["name"],
+              postURL: postData[i]["link"],
+              img: postData[i]["featured_media"],
+              title: postData[i]["title"]["rendered"],
+              author: postData[i]["_embedded"]["author"][0]["name"],
+              authorURL: postData[i]["_embedded"]["author"][0]["link"],
+              date: postData[i]["date"],
+              category: postData[i]["_embedded"]["wp:term"][0][0]["name"]
+            }
+            updatedPosts.push(newPost)
+        }
+        console.log(updatedPosts)
+        setPosts(updatedPosts)
+      } catch (error) {
+        console.log("Something went wrong:", error)
+      }
+    }
+
+    fetchPosts()
+  }, [])
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <div>
+      
+    </div>
   )
 }
 

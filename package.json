@@ -22,7 +22,9 @@
     "eslint": "^8.53.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.4",
+    "sass": "^1.69.5",
     "typescript": "^5.2.2",
+    "vanilla-framework": "^4.5.1",
     "vite": "^5.0.0"
   }
 }
