@@ -51,7 +51,9 @@ const App = () => {
 
   return (
     <div>
-      
+      <div>
+        {posts.map(post => <BlogCard {...post}/>)}
+      </div>
     </div>
   )
 }
