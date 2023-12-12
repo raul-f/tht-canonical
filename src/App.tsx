@@ -21,11 +21,13 @@ const App = () => {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
+        //fetch data from wordpress api
         const res = await fetch("https://people.canonical.com/~anthonydillon/wp-json/wp/v2/posts")
         const postData = await res.json()
         console.log(postData)
 
-        let updatedPosts = []
+        // process response json into props for the BlogCard component
+        let updatedPosts: PostProps[] = []
         for(let i = 0; i < postData.length; i++) {
             let newPost: PostProps = {
               topic: postData[i]["_embedded"]["wp:term"][2][0] === undefined ? "General" : postData[i]["_embedded"]["wp:term"][2][0]["name"],
@@ -39,8 +41,8 @@ const App = () => {
             }
             updatedPosts.push(newPost)
         }
-        console.log(updatedPosts)
-        setPosts(updatedPosts)
+
+        setPosts(() => updatedPosts)
       } catch (error) {
         console.log("Something went wrong:", error)
       }
@@ -50,8 +52,8 @@ const App = () => {
   }, [])
 
   return (
-    <div>
-      <div>
+    <div className='grid main'>
+      <div className='row'>
         {posts.map(post => <BlogCard {...post}/>)}
       </div>
     </div>

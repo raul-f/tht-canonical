@@ -1,2 +1,21 @@
 @import "vanilla-framework";
 @include vanilla;
+
+.main {
+    display: flex;
+    min-height: 100vh;
+    min-width: 100vw;
+    justify-content: center;
+    align-items: center;
+}
+
+.blog-card {
+    display: flex;
+    flex-direction: column;
+    border-radius: 5px 5px 0 0;
+    border-top: 3px solid #A87CA0;
+}
+
+.footer-hr {
+    margin-top: auto;
+}
